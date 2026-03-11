@@ -1,37 +1,56 @@
-var http = require('http');
-var url = require('url');
-var fs = require('fs');
+// Carrega os módulos
+const http = require('http');
+const url = require('url');
+const fs = require('fs');
 
-function readFile(response, file) {
+// Função para abrir arquivo
+function readFile(response, file, type) {
     fs.readFile(file, function (err, data) {
-
         if (err) {
-            response.writeHead(500, {"Content-Type": "text/plain"});
+            response.writeHead(500, {"Content-Type": "text/plain; charset=utf-8"});
             response.end("Erro ao ler arquivo");
             console.log(err);
             return;
         }
 
+        response.writeHead(200, {"Content-Type": type});
         response.end(data);
     });
 }
 
-var server = http.createServer(function(request, response) {
+// Callback
+const callback = function(request, response) {
 
-    var path = url.parse(request.url).pathname;
+    const parts = url.parse(request.url);
 
-    console.log("Rota acessada:", path);
+    if (parts.pathname === "/pdf") {
 
-    if (path === "/rota1/cadastro") {
-        response.writeHead(200, {"Content-Type": "application/json"});
-        readFile(response, "cadastro.json");
+        readFile(response, "arquivo.pdf", "application/pdf");
+
+    } else if (parts.pathname === "/jpeg") {
+
+        readFile(response, "arquivo.jpeg", "image/jpeg");
+
+    } else if (parts.pathname === "/json") {
+
+        readFile(response, "dados.json", "application/json");
+
+    } else if (parts.pathname === "/html") {
+
+        readFile(response, "arquivo.html", "text/html; charset=utf-8");
 
     } else {
-        response.writeHead(404, {"Content-Type": "text/plain"});
-        response.end("404 - Rota não encontrada");
+
+        response.writeHead(404, {"Content-Type": "text/plain; charset=utf-8"});
+        response.end("Erro 404\nNão encontrado " + parts.pathname);
+
     }
+}
 
+// Criar servidor HTTP
+const server = http.createServer(callback);
+
+// Configuração
+server.listen(3000, () => {
+    console.log("Servidor rodando em http://localhost:3000");
 });
-
-server.listen(3000);
-console.log("Servidor rodando em http://localhost:3000");
