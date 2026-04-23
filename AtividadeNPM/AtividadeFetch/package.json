@@ -1,0 +1,15 @@
+{
+  "name": "atv3dw",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "Vinícius Lima",
+  "type": "module",
+  "main": "cli.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "chalk": "^5.6.2"
+  }
+}
