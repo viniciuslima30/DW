@@ -1,0 +1,10 @@
+{
+    "produto A": {
+        "produto": "bola",
+        "valor": 85.99 
+    },
+    "produto B": {
+        "produto": "camiseta",
+        "valor": 55.99
+    }
+}
